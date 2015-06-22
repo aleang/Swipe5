@@ -26,7 +26,8 @@ public class DropFileListener implements DropTargetListener {
     public void drop(DropTargetDropEvent event) {
         // Accept copy drops
         event.acceptDrop(DnDConstants.ACTION_COPY);
-
+        label.setText("Drop Text File Here");
+        
         // Get the transfer which can provide the dropped item data
         Transferable transferable = event.getTransferable();
 
@@ -56,11 +57,11 @@ public class DropFileListener implements DropTargetListener {
     }
 
     public void dragEnter(DropTargetDragEvent event) {
-    	label.setText(">> Drop Input File Here <<");
+    	label.setText(">> Drop Text File Here <<");
     }
 
     public void dragExit(DropTargetEvent event) {
-    	label.setText("Drop Input File Here");
+    	label.setText("Drop Text File Here");
     }
 
     

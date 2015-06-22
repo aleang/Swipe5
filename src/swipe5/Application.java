@@ -1,8 +1,10 @@
 package swipe5;
 
 import java.awt.Desktop;
+import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.List;
+import java.awt.Toolkit;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.net.URI;
@@ -43,6 +45,7 @@ import java.awt.event.ComponentEvent;
 
 import javax.swing.JScrollPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
+
 
 
 import java.awt.event.MouseAdapter;
@@ -153,7 +156,7 @@ public class Application {
 		panelBottom.add(panelBottomMiddle, BorderLayout.CENTER);
 		panelBottomMiddle.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
-		JLabel lblDropInputFile = new JLabel("Drop Input File Here");
+		JLabel lblDropInputFile = new JLabel("Drop Text File Here");
 		lblDropInputFile.setForeground(Color.WHITE);
 		panelBottomMiddle.add(lblDropInputFile);
 		
@@ -189,7 +192,7 @@ public class Application {
 		
 		JTextArea txaHowToPlay = new JTextArea();
 		txaHowToPlay.setWrapStyleWord(true);
-		txaHowToPlay.setText("Form a five letter word by swiping clockwise or anti-clockwise. The word could start from any letter and go in either direction.\r\n\r\nControl: use your mouse to click and drag over the five letters to create a word.\r\n\r\nIf the word is incorrect, the letters will move to make another arrangement and the definition will be displayed.\r\n\r\nYou can also load words from a file by dragging it into the \"Drop input file here\" area. Only words that contain 5 letters are accepted. One word per line.");
+		txaHowToPlay.setText("Form a five letter word by swiping clockwise or anti-clockwise. The word could start from any letter and go in either direction.\r\n\r\nControl: use your mouse to click and drag over the five letters to create a word.\r\n\r\nIf the word is incorrect, the letters will move to make another arrangement and the definition will be displayed.\r\n\r\nYou can also load words from a file by dragging it into the application. Only words that contain 5 letters are accepted, definitions are optional (add a space before the definition). One word and definition per line.");
 		txaHowToPlay.setLineWrap(true);
 		txaHowToPlay.setEditable(false);
 		scrHowToPlay.setViewportView(txaHowToPlay);
@@ -211,6 +214,10 @@ public class Application {
 				frameMain.show();
 			}
 		});
+		
+		Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
+		Dimension frameSize = frmApplication.getSize();
+		frmApplication.setLocation((d.width - frameSize.width) / 2, (d.height - frameSize.height) / 2);
 		
 		frameMain.setVisible(true);
 		new DropTarget(frmApplication, myDragDropListener);

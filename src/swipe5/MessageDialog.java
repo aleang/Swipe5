@@ -1,7 +1,10 @@
 package swipe5;
 
 import java.awt.BorderLayout;
+import java.awt.Desktop;
+import java.awt.Dimension;
 import java.awt.EventQueue;
+import java.awt.Toolkit;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -11,13 +14,19 @@ import javax.swing.JLabel;
 import javax.swing.JButton;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
+
 import java.awt.GridLayout;
+
 import javax.swing.JTextArea;
+
 import org.eclipse.wb.swing.FocusTraversalOnArray;
+
 import java.awt.Component;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Dialog.ModalExclusionType;
+
+import javax.swing.SwingConstants;
 
 public class MessageDialog extends JFrame {
 
@@ -26,14 +35,17 @@ public class MessageDialog extends JFrame {
 	/**
 	 * Create the frame.
 	 */
+	public MessageDialog(String message) {
+		this("", message);
+	}
 	public MessageDialog(String title, String message) {
+		setResizable(false);
 		MessageDialog md = this;
 		try {
 			UIManager.setLookAndFeel("com.seaglasslookandfeel.SeaGlassLookAndFeel");
 		} catch (Throwable e) {
 			e.printStackTrace();
 		}
-		setResizable(false);
 		setAlwaysOnTop(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setTitle(title);
@@ -42,6 +54,11 @@ public class MessageDialog extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		
+		Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
+		Dimension frameSize = getSize();
+		setLocation((d.width - frameSize.width) / 2, (d.height - frameSize.height) / 2);
+		
 		
 		JButton btnOk = new JButton("OK");
 		btnOk.addActionListener(new ActionListener() {

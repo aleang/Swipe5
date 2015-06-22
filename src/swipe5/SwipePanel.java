@@ -28,6 +28,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
 import static java.lang.System.out;
@@ -99,7 +100,7 @@ public class SwipePanel extends JPanel implements MouseListener, MouseMotionList
 		try {
 			myFont = Font.createFont( Font.PLAIN, 
 				getClass().getResourceAsStream("/resources/ClearSans-Regular.ttf") );
-			getFileData("/resources/swipe5words.txt", true);
+			
 		} catch (FontFormatException e){
 			myFont = Font.getFont("Arial");
 			out.println(e.getMessage());
@@ -112,7 +113,7 @@ public class SwipePanel extends JPanel implements MouseListener, MouseMotionList
 		setLayout(null);
 		txfWord = new JTextField();
 		txfWord.setHorizontalAlignment(SwingConstants.CENTER);
-		txfWord.setFont(new Font("Clear Sans", Font.PLAIN, 25));
+		txfWord.setFont(myFont.deriveFont(25f));
 		txfWord.setFocusable(false);
 		txfWord.setFocusTraversalKeysEnabled(false);
 		txfWord.setEditable(false);
@@ -136,7 +137,12 @@ public class SwipePanel extends JPanel implements MouseListener, MouseMotionList
 		label.setBounds(357, 148, 139, 18);
 		add(label);
 		
-		spawnLetters();
+		try {
+			getFileData("/resources/swipe5words.txt", true);
+		} catch (Exception e) {
+			out.println(e.getMessage());
+		}
+		
 	}
 
 	/* ========================================================================================
@@ -224,7 +230,7 @@ public class SwipePanel extends JPanel implements MouseListener, MouseMotionList
 	public void madeAnAttempt(boolean directionClockWise) {
 		if (currentWord.equalsIgnoreCase(txfWord.getText())){
 			if (wordList.size() == 0) {
-				JOptionPane.showMessageDialog(null, "No more words left. Will load words from the default file.");
+				new MessageDialog("No more words left. Will load words from the default file.");
 				try {
 					getFileData("/resources/swipe5words.txt", true);
 				} catch (Exception e) { out.println(e.getMessage());}
@@ -405,7 +411,7 @@ public class SwipePanel extends JPanel implements MouseListener, MouseMotionList
 		while (scan.hasNextLine()) {
 			String inputLine = scan.nextLine().trim();
 			if (fromProject) words.add(inputLine);
-			else if (isWordValid(inputLine)) words.add(inputLine.toUpperCase());
+			else if (isEntryValid(inputLine)) words.add(inputLine.toUpperCase());
 		}
 		scan.close();
 		if (words.size() < 1) {
@@ -414,14 +420,16 @@ public class SwipePanel extends JPanel implements MouseListener, MouseMotionList
 			this.wordList = words;
 			if (!fromProject) new MessageDialog("Success", String.format("%d words have been added from %s", words.size(), new File(filename).getName()));
 		}
+		spawnLetters();
 		return words;
 	}
-	public boolean isWordValid(String s) {
-		if (s.length() == 5) {
+	public boolean isEntryValid(String s) {
+		if (s.length() >= 5) {
 			boolean good = true;
-			for (char c: s.toCharArray()){
+			for (char c: Arrays.copyOfRange(s.toCharArray(), 0, 5)){
 				good &= Character.isAlphabetic(c);
 			}
+			
 			return good;
 		}
 		return false;
